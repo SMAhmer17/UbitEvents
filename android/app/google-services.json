@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "30956633829",
+    "project_id": "it-events-1fd80",
+    "storage_bucket": "it-events-1fd80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30956633829:android:72b3350af6b4cd73c2de0c",
+        "android_client_info": {
+          "package_name": "com.example.ubitevents"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiFVr0uJaG_CMuUz0AabwrJAtTEKVTGok"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
