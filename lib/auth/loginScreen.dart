@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,6 +42,7 @@ class _loginScreenState extends State<loginScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
+        // ignore: deprecated_member_use
         child: WillPopScope(
             onWillPop: () async {
               SystemNavigator.pop();
@@ -58,7 +59,7 @@ class _loginScreenState extends State<loginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Sign In',
+                      'Sign in',
                       style:
                           TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
                     ),
@@ -71,6 +72,8 @@ class _loginScreenState extends State<loginScreen> {
                       keyboardType: TextInputType.emailAddress,
                       controller: emailController,
                       decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
                           prefix: const Padding(
                             padding: EdgeInsets.only(right: 10.0),
                             child: Icon(Icons.email),
@@ -95,6 +98,8 @@ class _loginScreenState extends State<loginScreen> {
                     TextFormField(
                       controller: passwordController,
                       decoration: InputDecoration(
+                           filled: true,
+                        fillColor: Colors.white,
                           suffixIcon: GestureDetector(
                             onTap: () {
                               setState(() {

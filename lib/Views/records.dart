@@ -1,11 +1,9 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ubitevents/Utils/utils.dart';
 import 'package:ubitevents/Views/homeScreen.dart';
-import 'package:ubitevents/Views/search.dart';
+import 'package:ubitevents/Views/testSearch.dart';
 
 import '../auth/loginScreen.dart';
 
@@ -39,8 +37,14 @@ class _RecordsState extends State<Records> {
 
   // Firestore instance  -- to update and delete
   CollectionReference ref = FirebaseFirestore.instance.collection('attendees');
-  final attendees =
-      FirebaseFirestore.instance.collection('attendees').snapshots();
+  final attendees = FirebaseFirestore.instance.collection('attendees').orderBy('serial_no').snapshots();
+
+
+
+
+
+
+
   // Controllers
   String serailNoController = "";
   String nameController = "";
@@ -53,7 +57,7 @@ class _RecordsState extends State<Records> {
       appBar: AppBar(
         title: const Text(
           'Records',
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500),
         ),
 
         actions: [
@@ -71,16 +75,48 @@ class _RecordsState extends State<Records> {
       ),
       body: Column(
         children: [
-          // Fetching Records
+           StreamBuilder<QuerySnapshot>(
+              stream: attendees,
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox();
+                }
+                if (snapshot.hasError) {
+                  return const Center(
+                    child: (Text("Error loading data")),
+                  );
+                } else {
+                  return 
+                                Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Padding(
+                
+                padding:  EdgeInsets.only(right : MediaQuery.of(context).size.width * 0.06 , top : MediaQuery.of(context).size.height * 0.02 , bottom : MediaQuery.of(context).size.height * 0.01),
+                child: Text('Total Entries: ${snapshot.data?.docs.length}' 
+                , style: TextStyle(fontSize: 18 , fontWeight: FontWeight.w600),),
+              
+              ),
+              
+            ],
+          );
 
+                  
+                }
+              }),
+
+          
+         
+          // Fetching Records
           StreamBuilder<QuerySnapshot>(
               stream: attendees,
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
+                  return Expanded(child: const Center(child: CircularProgressIndicator()));
                 }
-
+      
                 if (snapshot.hasError) {
                   return const Center(
                     child: (Text("Error loading list")),
@@ -100,9 +136,9 @@ class _RecordsState extends State<Records> {
                                 child: Card(
                                   child: ListTile(
                                     title: Text(
-                                        snapshot.data!.docs[index]['name']),
+                                        snapshot.data!.docs[index]['name'] , style: TextStyle(fontWeight:FontWeight.w600),),
                                     subtitle: Text(snapshot.data!.docs[index]
-                                        ['serial_no']),
+                                        ['serial_no'] , style: TextStyle(fontWeight:FontWeight.w500),),
                                     //   //Update
                                     trailing: Visibility(
                                       child: IconButton(
@@ -144,9 +180,10 @@ class _RecordsState extends State<Records> {
                                                                 if (value!.isEmpty) {
                                                                   return ('Enter Serial No');
                                                                 }
+                                                                return null;
                                                               },
                                                             ),
-
+                  
                                                             //Name
                                                             TextFormField(
                                                               initialValue: snapshot.data!.docs[index]
@@ -162,10 +199,11 @@ class _RecordsState extends State<Records> {
                                                                 if (value!.isEmpty) {
                                                                   return ('Enter Name');
                                                                 }
+                                                                return null;
                                                               },
                                                             ),
                                                             //Contact No
-
+                  
                                                             TextFormField(
                                                               initialValue: snapshot.data!.docs[index]['contact_no'],
                                                               onChanged:(value) {
@@ -179,6 +217,7 @@ class _RecordsState extends State<Records> {
                                                                 if (value!.isEmpty) {
                                                                   return ('Enter Contact No.');
                                                                 }
+                                                                return null;
                                                               },
                                                             ),
                                                             //Signature No
@@ -196,6 +235,7 @@ class _RecordsState extends State<Records> {
                                                                 if (value!.isEmpty) {
                                                                 return ('Enter signature');
                                                                 }
+                                                                return null;
                                                               },
                                                             ),
                                                             const SizedBox(
@@ -211,10 +251,9 @@ class _RecordsState extends State<Records> {
                                                                   IconButton(
                                                                       onPressed:() async {
                                                                         if (true) {
-                                                                          await ref.doc(snapshot.data!.docs[index]['id']).delete();
-                                                                          String
-                                                                              id = DateTime.now().millisecondsSinceEpoch.toString();
-
+                                                                          // await ref.doc(snapshot.data!.docs[index]['id']).delete();
+                                                                          String id = DateTime.now().millisecondsSinceEpoch.toString();
+                  
                                                                           await ref.doc(id).set({
                                                                             'id':id,
                                                                             'name': nameController,
@@ -223,7 +262,7 @@ class _RecordsState extends State<Records> {
                                                                             'signature': signatureController,
                                                                           });
                                                                         }
-
+                  
                                                                         Utils().toastMessage(
                                                                             'Record Updated');
                                                                         Navigator.pop(
@@ -238,7 +277,7 @@ class _RecordsState extends State<Records> {
                                                                       onPressed:
                                                                           () {
                                                                         // Delete
-
+                  
                                                                         ref.doc(snapshot.data!.docs[index]['id'])
                                                                             .delete().then((value) {
                                                                           Utils().toastMessage('Record Deleted');
@@ -264,6 +303,8 @@ class _RecordsState extends State<Records> {
                           }));
                 }
               }),
+        
+        
         Padding(
             padding:  EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width * 0.08 , vertical:MediaQuery.of(context).size.height * 0.02),
             child: Row(
@@ -279,15 +320,15 @@ class _RecordsState extends State<Records> {
                     Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => const Search()));
+                                builder: (_) => testSearch(role: widget.role)));
                   }, icon: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Icon(Icons.search , color: Colors.black,),
                   )),
                 ),
-
-// 
-
+      
+      
+      
                 Card(
                   color: Colors.amber,
                   elevation: 8,
@@ -309,4 +350,7 @@ class _RecordsState extends State<Records> {
       ),
     );
   }
+
+
+
 }

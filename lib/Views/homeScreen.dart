@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ubitevents/Utils/utils.dart';
-import 'package:ubitevents/Views/records.dart';
-import 'package:ubitevents/Views/signin.dart';
 import 'package:ubitevents/auth/loginScreen.dart';
 import 'package:ubitevents/widgets/round_button.dart';
 
@@ -43,6 +41,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor:  Color.fromARGB(255, 255, 228, 187),
         body: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -61,7 +60,8 @@ class _AddUserScreenState extends State<AddUserScreen> {
                               MaterialPageRoute(builder: (_) => loginScreen()));
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                         
+                          backgroundColor: Colors.amber
                         ),
                         child: Padding(
                           padding: EdgeInsets.all(
@@ -115,6 +115,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                           if (value!.isEmpty) {
                             return ('Enter Serial No');
                           }
+                          return null;
                         },
                       ),
                     ],
@@ -155,6 +156,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                           if (value!.isEmpty) {
                             return ('Enter Name');
                           }
+                          return null;
                         },
                       ),
                     ],
@@ -195,6 +197,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                           if (value!.isEmpty) {
                             return ('Enter Contact Number.');
                           }
+                          return null;
                         },
                       ),
                     ],
@@ -275,6 +278,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                         }).onError((error, stackTrace) {
                           setState(() {
                             loading = false;
+                            // Utils().toastMessage(error.toString());
                           });
                           Utils().toastMessage('Record not added');
                         });

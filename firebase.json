@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "ku-ubit-events",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}

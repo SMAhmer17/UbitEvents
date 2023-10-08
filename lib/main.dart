@@ -1,10 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:ubitevents/Views/homeScreen.dart';
-import 'package:ubitevents/Views/records.dart';
-import 'package:ubitevents/Views/search.dart';
 import 'package:ubitevents/auth/loginScreen.dart';
 
 import 'firebase_options.dart';
@@ -27,12 +23,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
 
     return MaterialApp(
-        title: 'Flutter Demo',
+   
+        title: 'UBIT EVENTS',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          scaffoldBackgroundColor:Colors.white,
           appBarTheme: AppBarTheme(
               elevation: 2,
               centerTitle: true,
@@ -44,6 +41,7 @@ class MyApp extends StatelessWidget {
               seedColor: const Color.fromARGB(255, 255, 161, 11)),
           useMaterial3: true,
         ),
-        home: loginScreen());
+        home: loginScreen()
+        );
   }
 }
